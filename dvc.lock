@@ -1,0 +1,47 @@
+schema: '2.0'
+stages:
+  download:
+    cmd: python -m src.download
+    deps:
+    - path: src/dataset_config.py
+      hash: md5
+      md5: 3dfbc7152adfcc892ce94654d08a25e0
+      size: 8225
+    - path: src/download.py
+      hash: md5
+      md5: 95ded8e7d259accd28bdc0080e1fd3e5
+      size: 6077
+    params:
+      dataset.yaml:
+        features:
+          numeric:
+          - duration
+          - credit_amount
+          - installment_commitment
+          - residence_since
+          - age
+          - existing_credits
+          - num_dependents
+          categorical:
+          - checking_status
+          - credit_history
+          - purpose
+          - savings_status
+          - employment
+          - personal_status
+          - other_parties
+          - property_magnitude
+          - other_payment_plans
+          - housing
+          - job
+          - own_telephone
+          - foreign_worker
+        raw_path: data/raw/dataset.csv
+        target:
+          column: credit_risk
+          positive_class: bad
+    outs:
+    - path: data/raw/dataset.csv
+      hash: md5
+      md5: 24b8e38b9c8688d495afc8eb5cb40127
+      size: 139022

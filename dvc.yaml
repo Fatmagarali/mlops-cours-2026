@@ -1,0 +1,13 @@
+stages:
+  download:
+    cmd: python -m src.download
+    deps:
+    - src/dataset_config.py
+    - src/download.py
+    params:
+    - dataset.yaml:
+      - features
+      - raw_path
+      - target
+    outs:
+    - data/raw/dataset.csv
