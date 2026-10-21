@@ -1,0 +1,10 @@
+
+# Dépendances de l'image du pipeline
+mlflow-skinny==3.16.1
+scikit-learn==1.9.1
+skops==0.16.0
+pandas==2.3.3
+numpy==2.5.3
+pyarrow==25.0.1
+pyyaml==6.0.3
+boto3==1.43.106
