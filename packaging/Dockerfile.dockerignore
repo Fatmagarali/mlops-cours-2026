@@ -1,0 +1,10 @@
+# Liste blanche : on exclut TOUT, puis on ré-inclut ce que l'image copie.
+*
+!dataset.yaml
+!src/__init__.py
+!src/dataset_config.py
+!packaging/requirements.txt
+!packaging/app/__init__.py
+!packaging/app/serve.py
+!packaging/model/model.onnx
+!packaging/model/metadata.json

@@ -1,0 +1,40 @@
+{
+  "dataset": "german-credit",
+  "model_name": "scoring-model",
+  "model_alias": "champion",
+  "model_version": "9",
+  "run_id": "d99d7cb3f393410db9a703eccc0c3be5",
+  "target": "credit_risk",
+  "positive_class": "bad",
+  "threshold": 0.3182,
+  "threshold_source": "param decision_threshold du run",
+  "features": {
+    "numeric": [
+      "duration",
+      "credit_amount",
+      "installment_commitment",
+      "residence_since",
+      "age",
+      "existing_credits",
+      "num_dependents"
+    ],
+    "categorical": [
+      "checking_status",
+      "credit_history",
+      "purpose",
+      "savings_status",
+      "employment",
+      "personal_status",
+      "other_parties",
+      "property_magnitude",
+      "other_payment_plans",
+      "housing",
+      "job",
+      "own_telephone",
+      "foreign_worker"
+    ]
+  },
+  "onnx_opset": 17,
+  "onnx_sha256": "abeed68fd420def11ac6b63af11d2ae77a315612bf4a84a2aed520402baf4ed7",
+  "exported_at": "2026-11-01T17:29:55+00:00"
+}

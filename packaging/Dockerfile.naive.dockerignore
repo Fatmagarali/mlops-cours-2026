@@ -1,0 +1,2 @@
+# Même la baseline naïve exclut l'environnement virtuel (sinon plusieurs Go).
+.venv/
