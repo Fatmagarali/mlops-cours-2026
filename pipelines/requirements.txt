@@ -8,3 +8,8 @@ numpy==2.5.3
 pyarrow==25.0.1
 pyyaml==6.0.3
 boto3==1.43.106
+# Lab 3 : gates de validation
+great-expectations==1.23.2
+evidently==0.7.23
+scipy==1.18.1
+pytest==9.1.1

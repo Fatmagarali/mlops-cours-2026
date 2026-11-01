@@ -60,30 +60,21 @@ def execute(
     subprocess.run(cmd, cwd=workdir, env=run_env, check=True)
 
 
-def run_stage(
-    module: str,
-    args=(),
-    inputs=None,
-    outputs=None,
-    env=None,
-) -> None:
-    """Copie les entrées, exécute l'étape et récupère les sorties.
-
-    inputs : {chemin relatif au projet : fichier ou dossier source}
-    outputs : {chemin relatif au projet : destination de sortie}
-    env : variables d'environnement supplémentaires
-    """
+def run_stage(module: str, args=(), inputs=None, outputs=None, env=None) -> None:
     with tempfile.TemporaryDirectory(prefix="stage-") as tmp:
         work = Path(tmp)
-
         for rel, src in (inputs or {}).items():
             copy(src, work / rel)
-
-        execute(module, args, work, env)
-
+        try:
+            execute(module, args, work, env)
+        except subprocess.CalledProcessError:
+            # Gate en échec : on recopie quand même les rapports déjà écrits
+            for rel, dst in (outputs or {}).items():
+                if (work / rel).exists():
+                    copy(work / rel, dst)
+            raise
         for rel, dst in (outputs or {}).items():
             copy(work / rel, dst)
-
 
 # --- Airflow : espace de travail local ou S3 --------------------
 

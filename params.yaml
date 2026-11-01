@@ -12,3 +12,14 @@ train:
   max_depth: 8
   learning_rate: 0.1
   random_state: 42
+
+drift:
+  ks_alpha: 0.05
+  psi_threshold: 0.25
+  drift_share: 0.1
+  simulation:
+    scale:
+      credit_amount: 1.4
+      duration: 1.3
+    shift:
+      age: -8

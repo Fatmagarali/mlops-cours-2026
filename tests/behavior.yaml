@@ -1,0 +1,15 @@
+invariance:
+  - column: residence_since
+    max_flip_rate: 0.05
+
+directional:
+  - column: credit_amount
+    factor: 1.5
+    expect: increase
+  - column: duration
+    factor: 1.5
+    expect: increase
+
+tolerance: 0.05
+max_violation_rate: 0.05
+min_group_size: 30
