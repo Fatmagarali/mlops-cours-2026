@@ -1,0 +1,8 @@
+# Dépendances de l'image de serving UNIQUEMENT. Versions alignées sur uv.lock.
+fastapi==0.142.2
+pydantic==2.13.5
+uvicorn[standard]==0.54.0
+onnxruntime==1.30.0
+numpy==2.5.3
+pandas==2.3.3
+pyyaml==6.0.3

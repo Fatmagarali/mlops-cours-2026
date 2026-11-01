@@ -1,0 +1,10 @@
+No settings file detected at /home/fatma/mlops-cours-2026/modelscan-settings.toml. Using defaults. 
+
+
+--- Summary ---
+
+ No issues found! 🎉
+
+--- Skipped --- 
+
+Total skipped: 1 - run with --show-skipped to see the full list.

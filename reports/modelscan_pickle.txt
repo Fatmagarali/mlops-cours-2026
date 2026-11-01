@@ -1,0 +1,28 @@
+No settings file detected at /home/fatma/mlops-cours-2026/modelscan-settings.toml. Using defaults. 
+
+Scanning /home/fatma/mlops-cours-2026/packaging/scan-demo/model.pkl using modelscan.scanners.PickleUnsafeOpScan model scan
+Scanning /home/fatma/mlops-cours-2026/packaging/scan-demo/malicious.pkl using modelscan.scanners.PickleUnsafeOpScan model scan
+
+--- Summary ---
+
+Total Issues: 1
+
+Total Issues By Severity:
+
+    - LOW: 0
+    - MEDIUM: 0
+    - HIGH: 0
+    - CRITICAL: 1
+
+--- Issues by Severity ---
+
+--- CRITICAL ---
+
+Unsafe operator found:
+  - Severity: CRITICAL
+  - Description: Use of unsafe operator 'system' from module 'posix'
+  - Source: /home/fatma/mlops-cours-2026/packaging/scan-demo/malicious.pkl
+
+--- Skipped --- 
+
+Total skipped: 2 - run with --show-skipped to see the full list.
