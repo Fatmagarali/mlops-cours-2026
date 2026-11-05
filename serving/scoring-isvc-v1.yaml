@@ -1,0 +1,29 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: scoring-model
+  namespace: scoring
+  annotations:
+    serving.kserve.io/deploymentMode: Knative
+spec:
+  predictor:
+    minReplicas: 1
+    maxReplicas: 3
+    containers:
+      - name: kserve-container
+        image: localhost:5001/scoring-api:1.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 8000
+            protocol: TCP
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "256Mi"
+          limits:
+            cpu: "1"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
