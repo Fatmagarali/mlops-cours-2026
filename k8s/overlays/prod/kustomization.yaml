@@ -8,7 +8,7 @@ resources:
   - ../../base
 images:
   - name: scoring-api
-    newName: localhost:5001/scoring-api
-    newTag: "2.0.0"
+    newName: ghcr.io/fatmagarali/mlops-cours-2026/scoring-api
+    newTag: "2.1.9"
 patches:
   - path: canary.yaml
