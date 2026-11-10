@@ -1,4 +1,5 @@
 """Corps de requête construits à partir de dataset.yaml et de vraies lignes de test."""
+
 import sys
 from pathlib import Path
 

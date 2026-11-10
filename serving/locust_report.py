@@ -1,4 +1,5 @@
 """Résume les CSV de Locust en un tableau Markdown (une ligne par <préfixe>_stats.csv)."""
+
 import re
 import sys
 from pathlib import Path
