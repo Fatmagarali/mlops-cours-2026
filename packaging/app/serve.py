@@ -116,3 +116,4 @@ def predict(req: PredictRequest):
             Prediction(probability=float(p), prediction=int(p >= THRESHOLD)) for p in proba
         ],
     )
+# Lab 6: déploiement par git push
