@@ -1,4 +1,5 @@
 """Tests comportementaux du modèle (style CheckList)."""
+
 from pathlib import Path
 
 import numpy as np
