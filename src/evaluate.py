@@ -1,4 +1,3 @@
-
 """Évalue le modèle local (models/model) sur le jeu de test -> reports/metrics.json.
 
 Stage DVC « evaluate » : ne dépend que de fichiers versionnés (pas du serveur MLflow),
@@ -16,7 +15,6 @@ from sklearn.metrics import confusion_matrix
 
 from src.dataset_config import load_config
 from src.train import MODEL_DIR, TEST_CSV, compute_metrics
-
 
 METRICS_JSON = Path("reports/metrics.json")
 
@@ -54,10 +52,7 @@ def main() -> None:
         encoding="utf-8",
     )
 
-    print(
-        f"{cfg.primary_metric} = "
-        f"{report[cfg.primary_metric]} -> {METRICS_JSON}"
-    )
+    print(f"{cfg.primary_metric} = {report[cfg.primary_metric]} -> {METRICS_JSON}")
 
 
 if __name__ == "__main__":

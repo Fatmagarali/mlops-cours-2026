@@ -1,4 +1,5 @@
 """Valide le modèle entraîné avant enregistrement (Evidently + tests comportementaux)."""
+
 import json
 from pathlib import Path
 from xml.etree import ElementTree

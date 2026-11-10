@@ -1,4 +1,3 @@
-
 # Fichier : src/grid_search.py
 """Lance 22 runs d'entraînement dans l'expérience MLflow « scoring »."""
 
@@ -7,11 +6,9 @@ import subprocess
 import sys
 from itertools import product
 
-
 CONFIGS = [
     # Référence naïve : DummyClassifier
     ("dummy", []),
-
     # Régression logistique : 4 x 2 = 8 runs
     *[
         (
@@ -23,7 +20,6 @@ CONFIGS = [
             ["none", "balanced"],
         )
     ],
-
     # Random Forest : 3 x 3 = 9 runs
     *[
         (
@@ -35,7 +31,6 @@ CONFIGS = [
             [4, 8, "none"],
         )
     ],
-
     # Gradient Boosting : 2 x 2 = 4 runs
     *[
         (

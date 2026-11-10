@@ -1,4 +1,5 @@
 """Valide un fichier de données contre le contrat Great Expectations (gx/)."""
+
 import argparse
 import html
 import json
@@ -45,12 +46,14 @@ def build_expectations(cfg: DatasetConfig, ref: pd.DataFrame) -> list:
     for col in numeric:
         lo, hi = float(ref[col].min()), float(ref[col].max())
         span = hi - lo
-        add(E.ExpectColumnValuesToBeBetween(
-            column=col,
-            min_value=0.0 if lo >= 0 else lo - span,
-            max_value=hi + span,
-            mostly=MOSTLY,
-        ))
+        add(
+            E.ExpectColumnValuesToBeBetween(
+                column=col,
+                min_value=0.0 if lo >= 0 else lo - span,
+                max_value=hi + span,
+                mostly=MOSTLY,
+            )
+        )
 
     # 4. Catégorielles : modalités vues à l'entraînement
     for col in categorical:
@@ -63,14 +66,22 @@ def build_expectations(cfg: DatasetConfig, ref: pd.DataFrame) -> list:
     others = [c for c in classes if str(c) != str(cfg.positive_class)]
     rate = float(cfg.encode_target(ref[cfg.target]).mean())
     add(E.ExpectColumnValuesToBeInSet(column=cfg.target, value_set=classes))
-    add(E.ExpectColumnValuesToBeInSet(
-        column=cfg.target, value_set=positive, mostly=round(rate / 2, 3),
-        description=f"Au moins {rate / 2:.0%} de « {cfg.positive_class} »",
-    ))
-    add(E.ExpectColumnValuesToBeInSet(
-        column=cfg.target, value_set=others, mostly=round(max(0.0, 1 - 2 * rate), 3),
-        description=f"Au plus {min(1.0, 2 * rate):.0%} de « {cfg.positive_class} »",
-    ))
+    add(
+        E.ExpectColumnValuesToBeInSet(
+            column=cfg.target,
+            value_set=positive,
+            mostly=round(rate / 2, 3),
+            description=f"Au moins {rate / 2:.0%} de « {cfg.positive_class} »",
+        )
+    )
+    add(
+        E.ExpectColumnValuesToBeInSet(
+            column=cfg.target,
+            value_set=others,
+            mostly=round(max(0.0, 1 - 2 * rate), 3),
+            description=f"Au plus {min(1.0, 2 * rate):.0%} de « {cfg.positive_class} »",
+        )
+    )
     return expectations
 
 
@@ -166,8 +177,9 @@ td,th{{border:1px solid #ccc;padding:4px 8px;text-align:left}}
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("csv", nargs="?", help="fichier à valider (défaut : raw_path)")
-    parser.add_argument("--build-suite", action="store_true",
-                        help=f"(ré)écrit la suite (défaut : {REFERENCE_CSV})")
+    parser.add_argument(
+        "--build-suite", action="store_true", help=f"(ré)écrit la suite (défaut : {REFERENCE_CSV})"
+    )
     args = parser.parse_args()
     cfg = load_config()
     if args.build_suite:
@@ -185,7 +197,8 @@ def main() -> int:
         "failed": failed,
         "rows": len(df),
         "positive_rate": round(float(cfg.encode_target(df[cfg.target]).mean()), 4)
-        if has_target else None,
+        if has_target
+        else None,
         "suite": SUITE,
     }
     REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
