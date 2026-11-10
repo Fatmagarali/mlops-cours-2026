@@ -1,4 +1,5 @@
 """Démonstration de drift : nouvelle clientèle comparée à celle d'entraînement."""
+
 from pathlib import Path
 
 import yaml

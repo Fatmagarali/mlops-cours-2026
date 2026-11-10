@@ -1,4 +1,3 @@
-
 """Composants KFP du pipeline de scoring (Lab 2).
 
 Chaque composant tourne dans l'image du projet.
@@ -75,6 +74,7 @@ def validate_data(
     summary = json.loads(Path(report.path).read_text())
     for name in ("n_checks", "n_failed", "rows", "positive_rate"):
         checks.log_metric(name, summary[name])
+
 
 @dsl.component(base_image=PIPELINE_IMAGE, install_kfp_package=False)
 def prepare_features(
@@ -171,13 +171,20 @@ def train_model(
     run_stage(
         "src.train",
         args=[
-            "--model", model_type,
-            "--C", C,
-            "--class_weight", class_weight,
-            "--n_estimators", n_estimators,
-            "--max_depth", max_depth,
-            "--learning_rate", learning_rate,
-            "--random_state", random_state,
+            "--model",
+            model_type,
+            "--C",
+            C,
+            "--class_weight",
+            class_weight,
+            "--n_estimators",
+            n_estimators,
+            "--max_depth",
+            max_depth,
+            "--learning_rate",
+            learning_rate,
+            "--random_state",
+            random_state,
         ],
         inputs={
             cfg.raw_path: raw_data.path,
@@ -194,15 +201,11 @@ def train_model(
     metadata = MlflowModel.load(model.path).metadata
     run_id = metadata["mlflow_run_id"]
 
-    MlflowClient(mlflow_uri).set_tag(
-        run_id, "kfp_run_id", kfp_run_id
-    )
+    MlflowClient(mlflow_uri).set_tag(run_id, "kfp_run_id", kfp_run_id)
 
     model.metadata["mlflow_run_id"] = run_id
     model.metadata["model_type"] = model_type
-    model.metadata["decision_threshold"] = round(
-        metadata["decision_threshold"], 4
-    )
+    model.metadata["decision_threshold"] = round(metadata["decision_threshold"], 4)
 
     return run_id
 
@@ -247,9 +250,7 @@ def evaluate_model(
             metrics.log_metric(name, value)
 
     positive = str(cfg.positive_class)
-    labels = set(
-        pd.read_csv(test_data.path)[cfg.target].astype(str)
-    )
+    labels = set(pd.read_csv(test_data.path)[cfg.target].astype(str))
     others = sorted(labels - {positive})
     negative = others[0] if len(others) == 1 else f"non {positive}"
 
@@ -259,9 +260,7 @@ def evaluate_model(
         [[c["tn"], c["fp"]], [c["fn"], c["tp"]]],
     )
 
-    MlflowClient(mlflow_uri).log_dict(
-        run_id, results, str(METRICS_JSON)
-    )
+    MlflowClient(mlflow_uri).log_dict(run_id, results, str(METRICS_JSON))
 
     return float(results[cfg.primary_metric])
 
@@ -317,8 +316,6 @@ def register_model(run_id: str, mlflow_uri: str) -> str:
     )
 
     if not versions:
-        raise RuntimeError(
-            f"Aucune version trouvée pour le run MLflow {run_id}"
-        )
+        raise RuntimeError(f"Aucune version trouvée pour le run MLflow {run_id}")
 
     return str(versions[0].version)

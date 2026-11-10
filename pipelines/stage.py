@@ -1,4 +1,3 @@
-
 """Exécute une étape du projet (python -m src.<étape>) pour un orchestrateur.
 
 Une étape possède des entrées, une commande et des sorties.
@@ -46,13 +45,9 @@ def execute(
     shutil.copyfile(ROOT / "params.yaml", workdir / "params.yaml")
 
     run_env = {**os.environ, **(env or {})}
-    run_env["PYTHONPATH"] = os.pathsep.join(
-        filter(None, [str(ROOT), os.getenv("PYTHONPATH")])
-    )
+    run_env["PYTHONPATH"] = os.pathsep.join(filter(None, [str(ROOT), os.getenv("PYTHONPATH")]))
 
-    config = Path(
-        os.getenv("DATASET_CONFIG", ROOT / "dataset.yaml")
-    ).resolve()
+    config = Path(os.getenv("DATASET_CONFIG", ROOT / "dataset.yaml")).resolve()
     run_env["DATASET_CONFIG"] = str(config)
 
     cmd = [sys.executable, "-m", module, *map(str, args)]
@@ -75,6 +70,7 @@ def run_stage(module: str, args=(), inputs=None, outputs=None, env=None) -> None
             raise
         for rel, dst in (outputs or {}).items():
             copy(work / rel, dst)
+
 
 # --- Airflow : espace de travail local ou S3 --------------------
 
@@ -128,11 +124,7 @@ def push(
     before: dict[Path, int],
 ) -> None:
     """Publie les fichiers créés ou modifiés par l'étape."""
-    changed = [
-        p
-        for p, mtime in snapshot(work).items()
-        if before.get(p) != mtime
-    ]
+    changed = [p for p, mtime in snapshot(work).items() if before.get(p) != mtime]
 
     if workspace.startswith("s3://"):
         s3, bucket, prefix = _s3(workspace)
@@ -161,15 +153,11 @@ def xcom_summary(work: Path) -> dict:
 
     model_path = work / MODEL_DIR
     if (model_path / "MLmodel").exists():
-        summary["mlflow_run_id"] = Model.load(
-            str(model_path)
-        ).metadata["mlflow_run_id"]
+        summary["mlflow_run_id"] = Model.load(str(model_path)).metadata["mlflow_run_id"]
 
     metrics_path = work / METRICS_JSON
     if metrics_path.exists():
-        summary["metrics"] = json.loads(
-            metrics_path.read_text(encoding="utf-8")
-        )
+        summary["metrics"] = json.loads(metrics_path.read_text(encoding="utf-8"))
 
     return summary
 

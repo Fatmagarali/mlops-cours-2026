@@ -1,4 +1,5 @@
 """Détecte un drift entre données de référence et courantes (KS/chi2 + PSI)."""
+
 import argparse
 import json
 from pathlib import Path

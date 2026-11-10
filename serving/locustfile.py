@@ -2,6 +2,7 @@
 
 Variables d'environnement : ISVC_HOST, API_FORMAT (v1|v2), V2_MODEL, BATCH_SIZE.
 """
+
 import os
 import random
 

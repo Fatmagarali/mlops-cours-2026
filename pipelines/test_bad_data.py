@@ -1,4 +1,5 @@
 """Pipeline de test du gate : sur données corrompues, il doit ÉCHOUER."""
+
 from kfp import compiler, dsl
 from kfp.dsl import Dataset, Input, Output
 

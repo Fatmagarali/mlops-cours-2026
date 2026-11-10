@@ -1,4 +1,5 @@
 """Fabrique des données de test (corrupt / drift) à partir de vraies données."""
+
 import argparse
 from pathlib import Path
 

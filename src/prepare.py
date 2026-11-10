@@ -19,9 +19,7 @@ PROCESSED = Path("data/processed")
 
 def main() -> None:
     cfg = load_config()
-    params = yaml.safe_load(
-        Path("params.yaml").read_text(encoding="utf-8")
-    )["prepare"]
+    params = yaml.safe_load(Path("params.yaml").read_text(encoding="utf-8"))["prepare"]
     id_col = params["id_column"]
 
     df = pd.read_csv(cfg.raw_path)

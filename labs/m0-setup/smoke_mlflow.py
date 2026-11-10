@@ -1,5 +1,7 @@
 """Smoke test MLflow : logge un run (paramètre, métriques, artefact) sur le serveur."""
+
 import os
+
 import mlflow
 
 mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI", "http://localhost:5000"))

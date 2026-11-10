@@ -1,4 +1,3 @@
-
 """Entraîne un modèle de scoring et trace le run dans MLflow.
 
 Les hyperparamètres par défaut proviennent de params.yaml.
@@ -35,7 +34,6 @@ from sklearn.pipeline import Pipeline
 
 from src.dataset_config import DatasetConfig, load_config
 
-
 EXPERIMENT = "scoring"
 TRAIN_CSV = Path("data/processed/train.csv")
 TEST_CSV = Path("data/processed/test.csv")
@@ -63,26 +61,19 @@ SKOPS_TRUSTED_TYPES = [
 ]
 
 PIP_REQUIREMENTS = [
-    f"{package}=={version(package)}"
-    for package in ("scikit-learn", "skops", "pandas", "numpy")
+    f"{package}=={version(package)}" for package in ("scikit-learn", "skops", "pandas", "numpy")
 ]
 
 
 def none_or(cast):
     """Convertisseur argparse acceptant la valeur none."""
-    return lambda value: (
-        None if str(value).lower() == "none" else cast(value)
-    )
+    return lambda value: None if str(value).lower() == "none" else cast(value)
 
 
 def parse_args() -> argparse.Namespace:
-    defaults = yaml.safe_load(
-        Path("params.yaml").read_text(encoding="utf-8")
-    )["train"]
+    defaults = yaml.safe_load(Path("params.yaml").read_text(encoding="utf-8"))["train"]
 
-    parser = argparse.ArgumentParser(
-        description="Entraîne un modèle et le trace dans MLflow"
-    )
+    parser = argparse.ArgumentParser(description="Entraîne un modèle et le trace dans MLflow")
 
     parser.add_argument(
         "--model",
@@ -128,11 +119,7 @@ def build_model(
     """Construit le pipeline de prétraitement et le modèle."""
     cls, _ = MODELS[model_type]
 
-    extra = (
-        {"random_state": seed}
-        if model_type != "dummy"
-        else {"strategy": "prior"}
-    )
+    extra = {"random_state": seed} if model_type != "dummy" else {"strategy": "prior"}
 
     if model_type == "logistic_regression":
         extra["max_iter"] = 1000
@@ -151,11 +138,7 @@ def decision_threshold(
     y_train: pd.Series,
 ) -> float:
     """Calcule le seuil de décision adapté au coût métier."""
-    k = (
-        (y_train == 0).sum() / (y_train == 1).sum()
-        if class_weight == "balanced"
-        else 1.0
-    )
+    k = (y_train == 0).sum() / (y_train == 1).sum() if class_weight == "balanced" else 1.0
 
     return cfg.cost_threshold(float(k))
 
@@ -194,10 +177,7 @@ def main() -> None:
     X_test, y_test = cfg.read_xy(TEST_CSV)
 
     # Sélection des hyperparamètres correspondant au modèle.
-    hyperparams = {
-        name: getattr(args, name)
-        for name in MODELS[args.model][1]
-    }
+    hyperparams = {name: getattr(args, name) for name in MODELS[args.model][1]}
 
     threshold = decision_threshold(
         cfg,
@@ -213,16 +193,10 @@ def main() -> None:
     )
 
     # Identification de l'origine du lancement.
-    launched_by = (
-        "dvc"
-        if os.getenv("DVC_STAGE")
-        else os.getenv("LAUNCHED_BY", "manual")
-    )
+    launched_by = "dvc" if os.getenv("DVC_STAGE") else os.getenv("LAUNCHED_BY", "manual")
 
     # Configuration de MLflow.
-    mlflow.set_tracking_uri(
-        os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
-    )
+    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000"))
     mlflow.set_experiment(EXPERIMENT)
 
     with mlflow.start_run(run_name=run_name) as run:
@@ -299,19 +273,13 @@ def main() -> None:
         )
 
         summary = ", ".join(
-            f"{key}={value:.3f}"
-            for key, value in metrics.items()
-            if key != "business_cost"
+            f"{key}={value:.3f}" for key, value in metrics.items() if key != "business_cost"
         )
         cost = metrics["business_cost"]
 
-        print(
-            f"{run_name}: seuil={threshold:.3f}, "
-            f"{summary}, business_cost={cost:.0f}"
-        )
+        print(f"{run_name}: seuil={threshold:.3f}, {summary}, business_cost={cost:.0f}")
         print(f"run_id : {run.info.run_id}")
 
 
 if __name__ == "__main__":
     main()
-
